@@ -1,0 +1,208 @@
+from sklearn.model_selection import cross_val_score, StratifiedKFold, KFold, cross_validate
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import MultinomialNB, BernoulliNB
+from sklearn.mixture import DPGMM, GaussianMixture, GMM, VBGMM
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
+from sklearn.svm import NuSVC
+from sklearn.linear_model import ElasticNet, Lasso
+ 
+### LogisticLasso ###
+#####################
+LogisticLasso = cross_validate(LogisticRegression(penalty='l1'),
+                X, y,
+                cv=StratifiedKFold(n_splits=10, shuffle=True, random_state=101),
+                scoring={'K_S': K_S, 'roc_auc':'roc_auc'},
+                n_jobs=40)
+ 
+# ### LogisticRegression ###
+# ##########################
+# LogisticRegression1 = cross_validate(LogisticRegression(penalty='l2'),
+#                       X, y,
+#                       cv=StratifiedKFold(n_splits=10, shuffle=False, random_state=101),
+#                       scoring={'K_S': K_S, 'roc_auc':'roc_auc'},
+#                       n_jobs=40)
+ 
+# ### RandomForest ###
+# ####################
+# RandomForestt = cross_validate(RandomForestClassifier(),
+#                                X, y,
+#                                cv = StratifiedKFold(n_splits=10, shuffle=False, random_state=101),
+#                                scoring = {'K_S':K_S, 'roc_auc':'roc_auc'},
+#                                n_jobs = 40)
+ 
+# ### GradientBoosting ###
+# ########################
+# XGradBoost = cross_validate(XGBClassifier(),
+#                              X, y,
+#                              cv=StratifiedKFold(n_splits=10, shuffle=False, random_state=101),
+#                              scoring={'K_S':K_S, 'roc_auc':'roc_auc'},
+#                              n_jobs = 40)
+ 
+# ### GradientBoosting ###
+# ########################
+# AdaBoost = cross_validate(AdaBoostClassifier(),
+#                           X, y,
+#                           cv = StratifiedKFold(n_splits=10, shuffle=False, random_state=101),
+#                           scoring = {'K_S': K_S, 'roc_auc':'roc_auc'},
+#                           n_jobs = 40)
+ 
+# ### MultiLayerPerceptron - NeuralNetworks (MPL_ANN) ###
+# #######################################################
+# MLP_ANN = cross_validate(MLPClassifier(hidden_layer_sizes=(100,100,50,50,50)),
+#                           X, y, 
+#                           cv = StratifiedKFold(n_splits=10, shuffle=False, random_state=101),
+#                           scoring={'K_S':K_S, 'roc_auc':'roc_auc'},
+#                           n_jobs = 40)
+ 
+# ### Support Vector Machine ###
+# ##############################
+# # SupporVectorMachine = cross_validate(svm.SVC(kernel='rbf',probability=True),
+# #                                      X,y,
+# #                                      cv=StratifiedKFold(n_splits=10, shuffle=False, random_state=101),
+# #                                      scoring={'K_S': K_S, 'roc_auc':'roc_auc'},
+# #                                      n_jobs=40)      
+ 
+# ### DecisionTree ###
+# ####################
+# DecisionTree = cross_validate(tree.DecisionTreeClassifier(),
+#                               X,y,
+#                               cv=StratifiedKFold(n_splits=10, shuffle=False, random_state=101),
+#                               scoring={'K_S': K_S, 'roc_auc':'roc_auc'},
+#                               n_jobs=40) 
+ 
+# ### Bagging ###
+# ###############
+# Bagg = cross_validate(BaggingClassifier(),
+#                               X,y,
+#                               cv=StratifiedKFold(n_splits=10, shuffle=False, random_state=101),
+#                               scoring={'K_S': K_S, 'roc_auc':'roc_auc'},
+#                               n_jobs=40) 
+ 
+# ### ExtraTrees ###
+# ####################
+# ExtraTree = cross_validate(ExtraTreesClassifier(),
+#                               X,y,
+#                               cv=StratifiedKFold(n_splits=10, shuffle=False, random_state=101),
+#                               scoring={'K_S': K_S, 'roc_auc':'roc_auc'},
+#                               n_jobs=40) 
+ 
+# ### K_Nearest_Neighbors ###
+# ###########################
+# Knn = cross_validate(KNeighborsClassifier(),
+#                               X,y,
+#                               cv=StratifiedKFold(n_splits=10, shuffle=False, random_state=101),
+#                               scoring={'K_S': K_S, 'roc_auc':'roc_auc'},
+#                               n_jobs=40)
+ 
+# ### QuadraticDiscriminantAnalysis ###
+# #####################################
+# QDA = cross_validate(QuadraticDiscriminantAnalysis(),
+#                               X,y,
+#                               cv=StratifiedKFold(n_splits=10, shuffle=False, random_state=101),
+#                               scoring={'K_S': K_S, 'roc_auc':'roc_auc'},
+#                               n_jobs=40)
+ 
+# ### BernoulliNB ###
+# ###################
+# Bernoulli = cross_validate(BernoulliNB(),
+#                               X,y,
+#                               cv=StratifiedKFold(n_splits=10, shuffle=False, random_state=101),
+#                               scoring={'K_S': K_S, 'roc_auc':'roc_auc'},
+#                               n_jobs=40)
+ 
+# ENet = cross_validate(ElasticNet(),
+#                       X,y,
+#                       cv=StratifiedKFold(n_splits=10, shuffle=False, random_state=101),
+#                       scoring={'K_S': K_S2, 'roc_auc':'roc_auc'},
+#                       n_jobs=40)
+ 
+# Lasso = cross_validate(Lasso(),
+#                        X,y,
+#                        cv=StratifiedKFold(n_splits=10, shuffle=False, random_state=101),
+#                        scoring={'K_S': K_S2, 'roc_auc':'roc_auc'},
+#                        n_jobs=40)
+ 
+ 
+#print(str(DecisionTree['test_K_S'].mean)+'\n'+str(LogisticRegression1['test_K_S'].mean()))
+ 
+dff = pd.DataFrame(data=[LogisticLasso['test_K_S'],
+                         LogisticRegression1['test_K_S'],
+                         RandomForestt['test_K_S'],
+                         XGradBoost['test_K_S'],
+                         AdaBoost['test_K_S'],
+                         MLP_ANN['test_K_S'],
+                         DecisionTree['test_K_S'],
+                         Bagg['test_K_S'],
+                         ExtraTree['test_K_S'],
+                         Knn['test_K_S'],
+                         QDA['test_K_S'],
+                         Bernoulli['test_K_S'],
+                         ENet['test_K_S'],
+                         Lasso['test_K_S']],
+                  
+                      index=['LogLasso',
+                             'LogRegr',
+                             'RForest',
+                             'XGBoost',
+                             'AdaBoost',
+                             'NNetwork',
+                             'DecisionTree',
+                             'Bagging',
+                             'ExtraTrees',
+                             'KNN',
+                             'Quadr.Discr.',
+                             'BernoulliNB',
+                             'ENet',
+                             'Lasso']).transpose()
+ 
+dfff = pd.DataFrame(data=[(LogisticLasso['test_roc_auc']*2. -1.),
+                          (LogisticRegression1['test_roc_auc']*2. -1.),
+                          (RandomForestt['test_roc_auc']*2. -1.),
+                          (XGradBoost['test_roc_auc']*2. -1.),
+                          (AdaBoost['test_roc_auc']*2. -1.),
+                          (MLP_ANN['test_roc_auc']*2. -1.),
+                          (DecisionTree['test_roc_auc']*2. -1.),
+                          (Bagg['test_roc_auc']*2. -1.),
+                          (ExtraTree['test_roc_auc']*2. -1.),
+                          (Knn['test_roc_auc']*2. -1.),
+                          (QDA['test_roc_auc']*2. -1.),
+                          (Bernoulli['test_roc_auc']*2. -1.),
+                          (ENet['test_roc_auc']*2. -1.),
+                          (Lasso['test_roc_auc']*2. -1.)],
+                   
+                   index=['LogLasso',
+                          'LogRegr',
+                          'RandomForest',
+                          'XGBoost',
+                          'AdaBoost',
+                          'NNetwork',
+                          'DecisionTree',
+                          'Bagging',
+                          'ExtraTrees',
+                          'KNN',
+                          'Quadr.Discr.',
+                          'BernoulliNB',
+                          'ENet',
+                          'Lasso']).transpose()
+ 
+import numpy as np
+import matplotlib.mlab as mlab
+import matplotlib.pyplot as plt
+ 
+plt.figure()
+ 
+plt.subplots(1, 1, figsize=(15, 8))
+dff.boxplot(figsize=[12,4],grid=True,fontsize=10)
+plt.title(r'Comparação entre métodos (base de teste)', fontsize=16)
+#plt.xlabel('Metodo de Machine Learning', fontsize=16)
+plt.ylabel('KS Score', fontsize=16)
+ 
+plt.subplots(1, 1, figsize=(15, 8))
+dfff.boxplot()
+# plt.title(r'Método', fontsize=16)
+# plt.xlabel('Metodo de Machine Learning', fontsize=16)
+plt.ylabel('Gini', fontsize=16)
+ 
+ 
+plt.show()
+# fig.savefig('test.jpg')
