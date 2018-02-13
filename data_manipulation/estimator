@@ -1,3 +1,5 @@
+## from Jupyter notebook ...
+
 from sklearn.model_selection import cross_val_score, StratifiedKFold, KFold, cross_validate
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import MultinomialNB, BernoulliNB
