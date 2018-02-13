@@ -22,7 +22,7 @@ def agrupa_dataframes(lista_variaveis, lista_dias, lista_mesref, keys, path):
                                                  str(lista_dias[j])+'_'+
                                                  str(lista_mesref[k])))
                 except IOError:
-                    0
+                    pass
 
                 #checar ordem de geracao das bases 
                 print('df_'+str(lista_variaveis[i])+'_'+str(lista_dias[j])+'_'+str(lista_mesref[k]))
