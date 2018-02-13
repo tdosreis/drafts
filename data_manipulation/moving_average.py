@@ -42,6 +42,14 @@ def media_movel_ajustada(df_original,indice,coluna,vl_base_origem,delta_t,n_cols
             elif i>=delta_t:
                 VL_m[i,j] = matrix[(i-delta_t):i,j][~np.isnan(matrix[(i-delta_t):i,j])].mean()
 
+#     QTD_m = np.zeros((len(matrix[:,0]),(len(matrix[0,:]))))
+#     for j in range(n_cols):
+#         for i in range(len(matrix[:,0])):
+#             if i<delta_t:
+#                 QTD_m[i,j] = (matrix[0:i,j][~np.isnan(matrix[0:i,j])]).sum()  # contar elementos anteriores ao ponto de marcação
+#             elif i>=delta_t:
+#                 QTD_m[i,j] = (matrix[(i-delta_t):i,j][~np.isnan(matrix[(i-delta_t):i,j])]).sum() # contar elementos anterior a t_0
+            
     # 5) Restaura DataFrame a partir das matrizes de teste # 
     ########################################################
 
