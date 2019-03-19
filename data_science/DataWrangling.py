@@ -77,9 +77,9 @@ class DataWrangling():
 
     def ConvertListsToTuples(data):
         '''
-        Converts a list of lists to a list of dictionaries
+        Converts a list of lists to a list of tuples
         '''
-        return [tuple(values[i]) for i in range(len(data))]
+        return [tuple(data[i]) for i in range(len(data))]
 
     def ConvertTuplestoDicts(data,col_index=0,p0=1,pN=False):
         '''
