@@ -10,37 +10,37 @@ class DataWrangling():
     def __init__(self): 
         pass
         
-    def ConvertToArray(self,data,dtype=object): 
+    def ConvertToArray(data,dtype=object): 
         '''
         Converts a list to a NumPy array
         '''
-        return np.asarray(self,data,dtype=dtype)
+        return np.asarray(data,dtype=dtype)
     
-    def FlatList(self,data): 
+    def FlatList(data): 
         '''
         Flattens a list of lists
         '''
         return [item for sublist in data for item in sublist]
     
-    def ConvertDataType(self,data,dtype=float): 
+    def ConvertDataType(data,dtype=float): 
         '''
         Converts a list of (string) values to a specific data type (str, float, int)
         '''
         return list(map(lambda x: dtype(x), data))
 
-    def CheckDataType(self,data,dtype=str):
+    def CheckDataType(data,dtype=str):
         '''
         Check if each element in a list of values belongs to a certain data type
         '''
         return list(map(lambda x: isinstance(x, dtype), data))
     
-    def InvertBool(self,data): 
+    def InvertBool(data): 
         '''
         Returns the opposite in a True or False list
         '''
         return list(map(lambda x: not(x), data))
 
-    def GetDataType(self,data,dtype=str,reverse=False): 
+    def GetDataType(data,dtype=str,reverse=False): 
         '''
         Returns a list with the data types of each element in a list
         '''
@@ -51,37 +51,37 @@ class DataWrangling():
 
         return data[mask]
 
-    def PercentageMissing(self,data,precision=2): 
+    def PercentageMissing(data,precision=2): 
         '''
         Returns the percentage of missing values in a pandas Series
         '''
         return round(float(data.isnull().sum())/data.shape[0],precision)
         
-    def EnumerateList(self,data): 
+    def EnumerateList(data): 
         '''
         Introduces an index to a list of values
         '''
         return [(i,j) for (i,j) in enumerate(data)]
     
-    def ConvertDataToDict(self,data):
+    def ConvertDataToDict(data):
         '''
         Converts a given dataframe into a dictionary
         '''
         return {i:data[i] for i in data.columns.values}
     
-    def GetSubDictionary(self,dictionary,variables): 
+    def GetSubDictionary(dictionary,variables): 
         '''
         Returns a sub-dictionary from a dictionary
         '''
         return {var: dictionary[var] for var in variables if var in dictionary}
 
-    def ConvertListsToTuples(self,data):
+    def ConvertListsToTuples(data):
         '''
         Converts a list of lists to a list of tuples
         '''
         return [tuple(data[i]) for i in range(len(data))]
 
-    def ConvertTuplestoDicts(self,data,col_index=0,p0=1,pN=False):
+    def ConvertTuplestoDicts(data,col_index=0,p0=1,pN=False):
         '''
         Converts a list of tuples to a list of dictionaries
         '''       
@@ -90,13 +90,13 @@ class DataWrangling():
         else: 
             return {item[col_index]: item[p0:pN] for item in data}
 
-    def MatchDictWithData(self,data,items_dict,matching_column):
+    def MatchDictWithData(data,items_dict,matching_column):
         '''
         Match a list of dictionaries to corresponding values on a dataframe
         '''
         return data.apply(lambda x: None if str(x) == 'nan' else items_dict.get(x)[matching_column])   
 
-    def BinsToLabels(self,bins_list):
+    def BinsToLabels(bins_list):
         '''
         Converts a list of bins to corresponding intervals as a string
         '''
@@ -104,7 +104,7 @@ class DataWrangling():
 
         return labels
     
-    def ComputeRowsColumns(self,nRows,nCols):
+    def ComputeRowsColumns(nRows,nCols):
         '''
         Computes all nRows,nCols combinations with indexation
         '''
@@ -115,7 +115,7 @@ class DataWrangling():
 
         return index
 
-    def ReplaceMissing(self,v,replacer=None):
+    def ReplaceMissing(v,replacer=None):
         '''
         Replaces all missing values in a list
         '''
@@ -130,7 +130,7 @@ class DataWrangling():
 
         return results
     
-    def FrequencyCounter(self,values,list_index=True):
+    def FrequencyCounter(values,list_index=True):
         '''
         Computes the absolute frequency of items on a dataframe
         '''
@@ -144,7 +144,7 @@ class DataWrangling():
 
         return values
     
-    def CumulativePercentage(self,values,col_index=1):
+    def CumulativePercentage(values,col_index=1):
         '''
         Computes the cumulative percentage of values in a list
         '''
@@ -159,7 +159,7 @@ class DataWrangling():
 
         return summary
 
-    def ConvertMultiEntryToDict(self,multEntryTuples, repeatedIndex, referenceList):
+    def ConvertMultiEntryToDict(multEntryTuples, repeatedIndex, referenceList):
         '''
         Matches a list of multiple repeated entries to a reference list of single values
         '''
