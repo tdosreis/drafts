@@ -11,7 +11,7 @@ class StatisticalPlots():
     def __init__(self,):
         pass
     
-    def TargetPlot(data,target):
+    def TargetPlot(self,data,target):
         '''
         Plots the customized histogram distribution of a binary target variable.
         '''
@@ -44,7 +44,7 @@ class StatisticalPlots():
     
     import seaborn as sns
 
-    def BoxPlotAllValues(data,figureSize=(16,8),vert=True): 
+    def BoxPlotAllValues(self,data,figureSize=(16,8),vert=True): 
         '''
         Boxplot of all variables within 'data'. Must be a dataframe.
         '''
@@ -73,7 +73,7 @@ class StatisticalPlots():
         ax.set_xticklabels(d.keys(),rotation=90)
         fig.suptitle('Outlier distribution per variable',fontsize=14,weight='bold')
 
-    def PlotStats(data,boxPlot=True,linePlot=True,scatterPlot=True,histPlot=True,
+    def PlotStats(self,data,boxPlot=True,linePlot=True,scatterPlot=True,histPlot=True,
                   histBins=100,figureSize=(12,8),plotTitle = None,verbosity=False,axis=None): 
         '''
         Generalized plotting function, includes boxplot, scatterplot, lineplot, histogram for data visualization of a single variable
@@ -175,7 +175,7 @@ class StatisticalPlots():
 
         fig.tight_layout(rect=[0, 0.03, 1, 0.95])
         
-    def CompareCorrelation(original_data,treated_data,figureSize=(12,4),title='',correlation_method = 'pearson'):         
+    def CompareCorrelation(self,original_data,treated_data,figureSize=(12,4),title='',correlation_method = 'pearson'):         
         '''
         Compares the correlation coefficent distribution among two different datasets.
         '''
