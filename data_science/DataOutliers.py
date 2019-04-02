@@ -29,7 +29,7 @@ class AnalyzeOutliers():
         '''
         Computes the indices of the corresponding outlier values according to modified-zscore
         '''
-        modZScore = (0.6745)*(self.data - self.median)/(self.meanAbsDev)
+        modZScore = (0.6745)*((self.data - self.median))/(self.meanAbsDev)
         self.ModZScoreOutlier = np.where(np.abs(modZScore) > threshold,)
         return self.ModZScoreOutlier[0], self.data[self.ModZScoreOutlier[0]].min()
     
@@ -53,7 +53,7 @@ class AnalyzeOutliers():
         import seaborn as sns
         import matplotlib.pyplot as plt   
         
-        mask = [ZScore,ModZScore,IQR]
+        mask = np.array([ZScore,ModZScore,IQR])
         
         outIndex = np.array([('ZScore',self.OutlierZScore()[0],self.OutlierZScore()[1]),
                              ('ModifiedZScore',self.OutlierModifiedZScore()[0],self.OutlierModifiedZScore()[1]),
@@ -69,8 +69,8 @@ class AnalyzeOutliers():
             sizeOne = np.array(self.data/self.mean)
             sizeTwo = np.array(self.data[i[1]]/self.mean)
             
-            sizeOne[abs(sizeOne) > 100] = 100
-            sizeTwo[abs(sizeTwo) > 100] = 100
+            sizeOne[abs(sizeOne) > 20] = 20
+            sizeTwo[abs(sizeTwo) > 20] = 20
 
             ax[0].scatter(self.data.index, self.data, s=sizeOne, c='lightblue')
             ax[0].scatter(i[1], self.data[i[1]], s=sizeTwo, c='darkblue')
@@ -84,9 +84,13 @@ class AnalyzeOutliers():
             ax[1].set_xlabel('Values',weight='bold')
             ax[1].set_ylabel('Distribution',weight='bold')
             ax[1].set_title('Density DistPlot')
+            
+            out_quant = float(len(i[1]))
+            all_quant = float(len(self.data))
+            pct_quant = (out_quant/all_quant)*100
                     
-            fig.text(0.75,0.75,'Number of outliers: '+str(len(i[1])), fontsize=12, weight='bold',color='darkgreen')
-            fig.text(0.75,0.70,'[%] of outliers: '+str(round(len(i[1])/len(self.data)*100,2))+'%', fontsize=12, weight='bold',color='darkgreen')
+            fig.text(0.75,0.75,'Number of outliers: ' + str(out_quant), fontsize=12, weight='bold',color='darkgreen')
+            fig.text(0.75,0.70,'[%] of outliers: ' + str(round(pct_quant,2))+'%', fontsize=12, weight='bold',color='darkgreen')
             
             fig.tight_layout(rect=[0, 0.03, 1, 0.95])
                     
@@ -113,7 +117,7 @@ class AnalyzeOutliers():
         sns.distplot(self.data.drop(IQR,axis=0),ax=ax[0],hist=False,kde=True,
                      kde_kws={'color':'green','shade':False,'alpha':0.6,'linewidth':5,'shade_lowest':True,'label': 'IQR'})
         
-        mask = [show_original,show_zscore,show_modzscore,show_iqr]
+        mask = np.array([show_original,show_zscore,show_modzscore,show_iqr])
         
         dataList   = np.array([self.data,self.data.drop(ZScore),self.data.drop(ModZScore),self.data.drop(IQR)],dtype=object)
         dataList   = dataList[mask]
@@ -146,6 +150,8 @@ class AnalyzeOutliers():
 
         fig.tight_layout(rect=[0, 0.03, 1, 0.95])
         
+        plt.show()
+        
 class TreatOutliers():
     '''
     Removes the outliers of a given dataset using a specific criterion: {IQR, ZScore, ModZScore}
@@ -153,7 +159,7 @@ class TreatOutliers():
     def __init__(self,):
         pass
     
-    def DropOutliers(data,method='IQR'):
+    def DropOutliers(self,data,method='IQR'):
         '''
         Removes the outlier values in accordance to each selected method: {IQR, ZScore, ModZScore}
         '''
@@ -161,27 +167,28 @@ class TreatOutliers():
         print('Dropping outliers using: ', method)
         return data.drop(AnalyzeOutliers(data).ComputeOutliers()[methodsList.get(method)])
 
-    def DropAllOutliers(data,method='IQR'): 
+    def DropAllOutliers(self,data,method='IQR'): 
         '''
         Applies DropOutliers() function to a set of variables within a dataframe
         '''
         print()
         if len(data.shape) == 1: 
             print('Removing Outliers: ',data.name)
-            return TreatOutliers.DropOutliers(data,method=method)
+            return self.DropOutliers(data,method=method)
         else:
             varsList = data.columns
             print('Removing Outliers: ',varsList.values)
-            return data.apply(lambda x: TreatOutliers.DropOutliers(x,method=method))
+            return data.apply(lambda x: self.DropOutliers(x,method=method))
 
-    def MethodNaN(x): 
+    def MethodNaN(self,x): 
         return {'median':x.median(),'mean':x.mean(),'zero':0}
 
-    def ReplaceNaN(data,method='median'): 
+    def ReplaceNaN(self,data,method='median'): 
         if len(data.shape) == 1: 
             return data.fillna(data.median())
         else:
-            return data.apply(lambda x: x.fillna(TreatOutliers.MethodNaN(x).get(method))) 
+            return data.apply(lambda x: x.fillna(self.MethodNaN(x).get(method))) 
+
 
 def main(): 
     '''
