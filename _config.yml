@@ -1,3 +1,6 @@
 theme: jekyll-theme-cayman
 
+plugins:
+  - jekyll-seo-tag
+
 <meta name="google-site-verification" content="ru3K_PN9hb9SCTxiJFA2tRZNk3yoDrgCl6M9K9rH0iw" />
