@@ -1,5 +1,7 @@
 theme: jekyll-theme-cayman
 
+author: tdosreis
+
 plugins:
   - jekyll-seo-tag
 
