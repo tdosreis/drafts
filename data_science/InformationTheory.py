@@ -5,6 +5,55 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
+def SplitData(data,n_partitions=8,axis=1): 
+    return np.array_split(data,n_partitions,axis)
+
+def SplitArgs(args,column_wise=True,n_partitions=8):
+    
+    """
+    Generalized approach for preparing the 
+    arguments of a multiple-argument function in
+    parallel processing tasks
+    
+    Inputs
+    ======
+    args: format should be a list
+    list(data,*args)
+    first value of the list is the data to be split
+    
+    if column_wise = False, then "row_wise" split is applied (this includes other data-type arguments in the list)
+    
+    Data values must be either a pandas dataframe or a pandas Series
+    """
+    
+    X = args[0]
+    
+    # column-wise argument parallelism
+    if column_wise: 
+        splits = SplitData(X,n_partitions,axis=1) 
+        args_  = [[X_, args[1:]] for (_, X_) in enumerate(splits)]
+        
+        for index, items in enumerate(args_): # flat mixed types list
+            args_[index] = [y for x in items for y in (x if isinstance(x, list) else (x,))]
+        
+        return args_
+        
+    # row-wise argument parallelism    
+    elif not column_wise: 
+        args_ = []
+        for index, element in enumerate(args): 
+            if isinstance(element,pd.core.series.Series) or isinstance(element,pd.core.frame.DataFrame): 
+                args_.append(SplitData(element,n_partitions,axis=0))
+            else:
+                args_.append(element)
+            
+        return args_    
+
+from collections import Counter
+import numpy as np
+import pandas as pd
+import seaborn as sns
+
 def ComputeProbs(data,compute_nan=False):
     '''
     Computes the probability mass function of a list of values
@@ -15,8 +64,8 @@ def ComputeProbs(data,compute_nan=False):
         pass
         
     N = np.where(compute_nan is False, np.sum( ~ np.isnan(data)), len(data))
-    P = [(i,float(j/N)) for (i,j) in Counter(data).items()]
-    P = DataWrangling.ConvertTuplestoDicts(P,0,1)
+    P = [(i,float(j)/N) for (i,j) in Counter(data).items()]
+    P = DataWrangling().ConvertTuplestoDicts(P,0,1)
     
     if not compute_nan and np.nan in P.keys(): 
         P.pop(np.nan)
@@ -41,7 +90,7 @@ def ShannonEntropy(data,bins,compute_nan=False,compute_bins=True):
     Computes the discrete Shannon's entropy H(X) for a list of values (X)
     '''
     if compute_bins: 
-        x = ConvertData(data,bins,show_boundaries=False)
+        x = DataBinning(data).ConvertData(bins,show_boundaries=False)
     else: 
         x = np.array(data)
     
@@ -59,8 +108,8 @@ def DistributionPlot(vals,X,Y,x_bins,y_bins,figSize=(10,6)):
                 cmap = 'Blues',
                 ax=ax,annot=True,fmt='.3f',
                 annot_kws = {'fontsize':10,'weight':'bold'},
-                yticklabels = DataBinning.LabelBins(X,x_bins),
-                xticklabels = DataBinning.LabelBins(Y,y_bins))
+                yticklabels = DataBinning(vals).LabelBins(X,x_bins),
+                xticklabels = DataBinning(vals).LabelBins(Y,y_bins))
     
     ax.tick_params(labelsize = 12,labelcolor='black')
 
@@ -108,4 +157,6 @@ def FeatureSelection(df,target,x_bins,target_bins,method='mutual_information',no
         variables = df.columns.values
         return sorted([(MutualInformation(df[str(variable)],target,x_bins,target_bins,normalized=normalized), \
                         variable) for variable in variables],reverse=True)
+
+
 

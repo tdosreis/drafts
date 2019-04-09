@@ -11,13 +11,13 @@ class StatisticalPlots():
     def __init__(self,):
         pass
     
-    def TargetPlot(self,data,target):
+    def TargetPlot(self,data,target,figSize=(10,10)):
         '''
         Plots the customized histogram distribution of a binary target variable.
         '''
-        print('Percentage of (binary target): ',str(round(target.sum()/data.shape[0],2)*100),str('%'))
+        print('Percentage of (binary target): ',str(round(float(target.sum())/data.shape[0],2)*100),str('%'))
 
-        fig, ax = plt.subplots(1,1)
+        fig, ax = plt.subplots(1,1,figsize=figSize)
 
         fig.suptitle('Histogram for target',fontsize=16,weight='bold',color='black')
 
@@ -38,7 +38,7 @@ class StatisticalPlots():
         for p in ax.patches:
             width, height = p.get_width(), p.get_height()
             x, y = p.get_xy() 
-            ax.annotate('{:.2%}'.format(height/data.shape[0]),
+            ax.annotate('{:.2%}'.format(float(height)/data.shape[0]),
                         (p.get_x()+.35*width, p.get_y() + height + y_distance),
                         fontsize=12,weight='bold',color='darkgreen')
     
@@ -70,7 +70,11 @@ class StatisticalPlots():
                    medianprops=dict(color='k'),
                    meanprops=dict(color='red'),
                    flierprops={'color':'darkgreen','alpha':0.8,'markersize':2,'markeredgecolor': 'darkgreen','marker': '.'})
-        ax.set_xticklabels(d.keys(),rotation=90)
+        if vert: 
+            ax.set_xticklabels(d.keys(),rotation=90)
+        elif not vert: 
+            ax.set_yticklabels(d.keys(),rotation=0)
+        fig.tight_layout(rect=[0, 0.05, 1, 0.95])
         fig.suptitle('Outlier distribution per variable',fontsize=14,weight='bold')
 
     def PlotStats(self,data,boxPlot=True,linePlot=True,scatterPlot=True,histPlot=True,
@@ -173,7 +177,8 @@ class StatisticalPlots():
         else:
             fig.suptitle('Data Analysis for ' + str(plotTitle),fontsize=16)
 
-        fig.tight_layout(rect=[0, 0.03, 1, 0.95])
+        fig.tight_layout(rect=[0, 0.05, 1, 0.95])
+        
         
     def CompareCorrelation(self,original_data,treated_data,figureSize=(12,4),title='',correlation_method = 'pearson'):         
         '''
@@ -228,24 +233,24 @@ class ExploratoryAnalysis():
             varsList = list(self.variables)
             numVars  = len(varsList)
 
-            nRows = math.ceil(numVars/nCols)
-            remove = len(DataWrangling.ComputeRowsColumns(nRows,nCols)) - numVars
-
-            if remove is 0: 
-                ref_ = DataWrangling.ComputeRowsColumns(nRows,nCols)
+            nRows = int(math.ceil(float(numVars)/nCols))
+            remove = len(DataWrangling().ComputeRowsColumns(nRows,nCols)) - numVars
+            
+            if remove == 0: 
+                ref_ = DataWrangling().ComputeRowsColumns(nRows,nCols)
             else:
-                ref_ = DataWrangling.ComputeRowsColumns(nRows,nCols)[:-remove]            
-
-            [ref_[i].insert(0,varsList[i]) for i in range(numVars)][0]
+                ref_ = DataWrangling().ComputeRowsColumns(nRows,nCols)[:-remove]            
+            [ref_[i].insert(0,varsList[i]) for i in range(int(numVars))][0]
 
             return ref_, nRows, nCols
-
+            
+        
         nRows = ComputeAllLists()[1]
         nCols = ComputeAllLists()[2]
 
-        d = DataWrangling.ConvertListsToTuples(ComputeAllLists()[0])
-        d = DataWrangling.ConvertTuplestoDicts(d, col_index=0, p0=1, pN=4)
-
+        d = DataWrangling().ConvertListsToTuples(ComputeAllLists()[0])
+        d = DataWrangling().ConvertTuplestoDicts(d, col_index=0, p0=1, pN=4)
+        
         return d, nRows
         
     def AllPlots(self,nCols=2,figureSize=(16,8),hist=True,kde=True,hist_bins=10,**kwargs):

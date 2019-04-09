@@ -176,6 +176,18 @@ class DataWrangling():
                 
         return d
     
+    def ParallelProcessing(self,func,args,n_processes=8): 
+        '''
+        Parallelizes a function with multiple arguments
+        '''
+        from multiprocessing import Pool
+
+        with Pool(processes=n_processes) as pool: 
+
+            res = pool.starmap(func, args)
+
+        return self.FlatList(res)
+    
 class Operations():
     '''
     A class of various statistical functions.
