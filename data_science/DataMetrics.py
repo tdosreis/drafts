@@ -1,14 +1,16 @@
 import numpy as np
 
-class EvalMetrics(): 
+class EvalMetrics():     
     '''
     Alternative class for model evaluation: quantifying the quality of predictions
     
     Author: Tiago Rosa dos Reis
+    
+    Note: code is still under development
     '''
     def __init__(self,y_true,y_pred): 
-        self.y_true = y_true
-        self.y_pred = y_pred
+        self.y_true = np.array(y_true)
+        self.y_pred = np.array(y_pred)
         
     def ComputeKS(self): 
         '''
