@@ -10,6 +10,14 @@ class EvalMetrics():
         self.y_true = y_true
         self.y_pred = y_pred
         
+    def ComputeKS(self): 
+        '''
+        Computes the Kolmogorov-Smirnov test for an ML model
+        '''
+        import stats
+        
+        return stats.ks_2samp(self.y_pred[self.y_true==1.0],self.y_pred[self.y_true==0.0])[0]
+        
     def ComputeAccuracy(self): 
         '''
         Alternative approach to compute the accuracy of a model
