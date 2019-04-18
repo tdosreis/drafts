@@ -14,8 +14,7 @@ class EvalMetrics():
         '''
         Computes the Kolmogorov-Smirnov test for an ML model
         '''
-        import stats
-        
+        from scipy import stats
         return stats.ks_2samp(self.y_pred[self.y_true==1.0],self.y_pred[self.y_true==0.0])[0]
         
     def ComputeAccuracy(self): 
