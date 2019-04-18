@@ -9,6 +9,15 @@ class EvalMetrics():
     def __init__(self,y_true,y_pred): 
         self.y_true = y_true
         self.y_pred = y_pred
+        
+    def ComputeAccuracy(self): 
+        '''
+        Alternative approach to compute the accuracy of a model
+        '''
+        f = lambda x: 1 if x[0] == x[1] else 0
+        x = zip(self.y_true,self.y_pred)
+        trues = list(map(f,x))
+        return sum(trues)/len(trues)
 
     def ZeroMatrix(self): 
         '''
