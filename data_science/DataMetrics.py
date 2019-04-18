@@ -3,6 +3,8 @@ import numpy as np
 class EvalMetrics(): 
     '''
     Alternative class for model evaluation: quantifying the quality of predictions
+    
+    Author: Tiago Rosa dos Reis
     '''
     def __init__(self,y_true,y_pred): 
         self.y_true = y_true
