@@ -54,8 +54,8 @@ class PreAnalysis():
         '''
         Counts the number of missing values per variable
         '''
-        nanTuples = sorted([(self.dataset[i].isna().sum(),i) for i in self.dataset.columns.values],reverse=True)
-        nanDicts = DataWrangling.ConvertTuplestoDicts(nanTuples,1,0)    
+        nanTuples = sorted([(self.dataset[i].isnull().sum(),i) for i in self.dataset.columns.values],reverse=True)
+        nanDicts = DataWrangling().ConvertTuplestoDicts(nanTuples,1,0)    
         return(nanDicts)
   
     def PlotMissing(self,variables):
@@ -118,6 +118,12 @@ class SummarizeData():
         self.dataset     = data
         self.Operations  = Operations
         
+    def ByPass(self,func,*args,**kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            pass
+        
     def AllFunctions(self,): 
         '''
         List of all statistical functions within Operations module
@@ -129,18 +135,17 @@ class SummarizeData():
         Displays a dictionary with all the calculated functions
         '''
         funcs = self.AllFunctions()
-        d = {variable: [getattr(self.Operations(self.dataset[str(variable)]), func)() for func in funcs] for variable in self.variables}
+        d = {variable: [self.ByPass(getattr(self.Operations(self.dataset[str(variable)]), func)) for func in funcs] for variable in self.variables}
         return d
     
     def DataStats(self,):
         '''
         Displays a dataframe with statistical information about a dataset
         '''
-        from DataWrangling import DataWrangling
         data = pd.DataFrame(self.ComputeAllFunctions())
-        newColumns = DataWrangling.ConvertTuplestoDicts(DataWrangling.EnumerateList(self.AllFunctions()),0)
+        newColumns = DataWrangling().ConvertTuplestoDicts(DataWrangling().EnumerateList(self.AllFunctions()),0)
         return data.transpose().rename(columns=newColumns).reset_index().rename(columns={'index':'Variable'})       
-        
+    
 if __name__ == '__main__': 
 
     Summary = SummarizeData(df)

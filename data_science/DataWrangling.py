@@ -188,6 +188,14 @@ class DataWrangling():
 
         return self.FlatList(res)
     
+    def ByPass(self,func,*args,**kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            pass
+        
+    
+    
 class Operations():
     '''
     A class of various statistical functions.
@@ -202,7 +210,7 @@ class Operations():
         '''
         Returns the quantity of missing values
         '''
-        return np.isnan(self.values).sum()
+        return self.values.isnull().sum()
 
     def EvalType(self):
         '''
