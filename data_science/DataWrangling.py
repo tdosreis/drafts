@@ -193,8 +193,6 @@ class DataWrangling():
             return func(*args, **kwargs)
         except Exception as e:
             pass
-        
-    
     
 class Operations():
     '''
@@ -205,7 +203,7 @@ class Operations():
     '''
     def __init__(self,data): 
         self.values = data
-    
+            
     def CountNan(self):
         '''
         Returns the quantity of missing values
@@ -252,13 +250,19 @@ class Operations():
         '''
         Returns the mean value of a data series
         '''
-        return self.values.max()
+        if self.values.dtype.name == 'object':
+            pass
+        else:
+            return self.values.max()
     
     def MinValue(self):
         '''
         Returns the minimum value of a data series
         '''
-        return self.values.min()
+        if self.values.dtype.name == 'object': 
+            pass
+        else:
+            return self.values.min()
     
     def Variance(self): 
         '''
@@ -270,7 +274,10 @@ class Operations():
         '''
         Returns the summation of values within a data series
         '''
-        return self.values.sum()
+        if self.values.dtype.name == 'object': 
+            pass
+        else: 
+            return self.values.sum()
     
     def StandardDeviation(self):
         '''
