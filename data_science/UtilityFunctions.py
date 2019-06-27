@@ -31,6 +31,18 @@ def AggregateValues(df,map_opers):
 # >>> median_BILL_AMT2     21200.000000
 # >>> dtype: float64
 
+# >>> on a groupby operation
+# df.groupby(['EDUCATION']).apply(AggregateValues,map_opers)
+# mean_LIMIT_BAL	count_LIMIT_BAL	max_BILL_AMT2	median_BILL_AMT2
+# EDUCATION				
+# 0	217142.857143	14.0	46229.0	5798.5
+# 1	212956.069910	10585.0	983931.0	13788.0
+# 2	147062.437634	14030.0	743970.0	26596.5
+# 3	126550.270490	4917.0	671563.0	24336.0
+# 4	220894.308943	123.0	382116.0	10232.0
+# 5	168164.285714	280.0	586825.0	41700.5
+# 6	148235.294118	51.0	441048.0	34770.0
+
 def ListValues(values): 
     '''
     Extracts the list of values in a dictionary
