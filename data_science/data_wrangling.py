@@ -1,5 +1,5 @@
 import numpy as np
-import pandas as pd
+#import pandas as pd
 
 class DataWrangling(): 
     """
@@ -44,8 +44,8 @@ class DataWrangling():
         '''
         Returns a list with the data types of each element in a list
         '''
-        data = ConvertToArray(data)
-        mask = CheckDataType(data,dtype=dtype)
+        data = self.ConvertToArray(data)
+        mask = self.CheckDataType(data,dtype=dtype)
         
         mask = np.where(reverse,InvertBool(mask),mask)
 
@@ -287,7 +287,7 @@ class Operations():
     
 if __name__ == '__main__': 
 
-    main = DataWrangling
+    main = DataWrangling()
     
     print('Data Analysis running as main script')
     
