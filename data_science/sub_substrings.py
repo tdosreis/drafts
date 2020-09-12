@@ -28,24 +28,6 @@ class SubStrings():
         data_dictionary : dictionary
             Dictionary containing all the groups matching a
             certain condition.
-
-        Examples
-        --------
-        import pandas as pd
-        >>> data = {'payment':[1,2,3,4],
-                    'Payments':[1,2,3,4],
-                    'Bill':[100,200,300,400],
-                    'AMOUNT':[10,20,30,40],
-                    'Amount':[1,2,3,4]}
-
-        >>> df = pd.DataFrame(data)
-
-        >>> key_words = {'payments':['pa','PA','Pay'],
-                         'amounts':['AMOU','amo','Am']}
-
-        >>> catch_sub_variables(key_words, df.columns.values)
-
-        {'payments': ['payment', 'Payments'], 'amounts': ['AMOUNT', 'Amount']}
         """
         list_of_substrings = self._list_of_values()
 
